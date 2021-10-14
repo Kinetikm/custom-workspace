@@ -22,9 +22,16 @@ RUN apt-get update --fix-missing && \
     apt-get upgrade -y && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        curl ca-certificates npm make go git
+        curl ca-certificates npm make git wget tar autotools-dev autoconf \
+        uuid-dev zlib1g-dev libjson-c-dev pkg-config
+
+RUN wget https://dl.google.com/go/go1.16.4.linux-amd64.tar.gz
+RUN tar -xvf go1.16.4.linux-amd64.tar.gz && mv go /usr/local
 
 RUN bash /init_folder/tools/code-server/install.sh
-RUN cd /init_folder/tools/filebrowser && make build
+RUN export GOROOT=/usr/local/go && \
+    export PATH=$GOROOT/bin:$PATH && \
+    cd /init_folder/tools/filebrowser && make build
+#RUN bash /init_folder/tools/netdata/netdata-installer.sh
 
-CMD ["code-server", "--auth", "none"]
+CMD ["bash", "/init_folder/tools/run.sh"]
