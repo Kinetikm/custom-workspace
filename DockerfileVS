@@ -1,14 +1,12 @@
-FROM registry.access.redhat.com/rhel7:7.9-548
+FROM roboxes/rhel8
 
 ADD ./ /init_folder
 
-RUN cd /init_folder/rpms && yum localinstall -y *.rpm && \
-    yum install -y http://repo.ius.io/ius-release-el7.rpm && \
-    yum install -y python36u python36u-pip    
+RUN cd /init_folder/rpms && yum localinstall -y *.rpm
 
 RUN bash /init_folder/tools/code-server/install.sh && \
     code-server --install-extension /init_folder/extentions/ms-python.python-2021.10.1336267007.vsix && \
     mv /init_folder/run.sh / && \
-    rm -r /init_folder # && \
-    # pip3 install tensorboard
+    rm -r /init_folder  && \
+    pip3 install tensorboard
 CMD ["cd / && bash run.sh"]
