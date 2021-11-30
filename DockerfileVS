@@ -7,6 +7,6 @@ RUN cd /init_folder/rpms && yum localinstall -y *.rpm
 RUN bash /init_folder/tools/code-server/install.sh && \
     code-server --install-extension /init_folder/extentions/ms-python.python-2021.10.1336267007.vsix && \
     mv /init_folder/run.sh / && \
-    rm -r /init_folder  # && \
-    # pip3 install tensorboard
+    rm -r /init_folder  && \
+    pip3 install tensorboard
 CMD ["cd / && bash run.sh"]
